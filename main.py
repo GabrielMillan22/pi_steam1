@@ -149,7 +149,9 @@ def developer_reviews_analysis1(desarrolador):
     #Creo un dataframe filtrando al desarrollador que presiso y reseteo el indice
     df_salida=df_final[df_final['developer']==desarrolador].reset_index()
     #Armo una lista con los valores corespondientes para el desarrolador en cuestion
-    lista_salida = [f'Negative = {df_salida['Negativos'].loc[0]}' , f'Positive = {df_salida["Positivos"].loc[0]}' ]
+    negativos=df_salida['Negativos'].loc[0]
+    positivos=df_salida["Positivos"].loc[0]
+    lista_salida = ['Negativos = {}'.format(negativos),'Positivos = {}'.format(positivos)]
     return lista_salida
 
 def developer2(desarrollador):
