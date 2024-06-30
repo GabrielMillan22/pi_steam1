@@ -194,7 +194,7 @@ def user_data1(user_id):
     for i, j in zip(df_datos['id'],df_datos['price']):
         if i in lista:
             precios+=j 
-    dinero_gastado = f'{int(precios)} USD'
+    dinero_gastado = '{} USD'.format(int(precios))
     #Obtiene la contidad de recomendaciones
     rsi=0
     rno=0
@@ -211,7 +211,7 @@ def user_data1(user_id):
         porsentaje = int((rsi/total)*100)
     else:
         porsentaje = 0
-    porsentaje = f'{porsentaje}%'
+    porsentaje = '{}%'.format(porsentaje)
     #Obtiene la cantidad de items
     total_items=0
     for i, j in zip(df_items['user_id'],df_items['items_count']):
@@ -286,7 +286,7 @@ def user_data(user_id:str):
 
 @app.get("/developer_reviews_analysis/{Desarrollador}")
 def developer_reviews_analysis(desarrollador:str):
-    desarrollador= desarrollador.lower()
+    
     return {desarrollador : developer_reviews_analysis1(desarrollador)}
 
 @app.get("/best_developer_year/{Año}")
