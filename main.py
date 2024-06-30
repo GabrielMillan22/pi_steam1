@@ -25,38 +25,40 @@ df_reviws = pd.read_csv('datasets/UserReviews.csv')
 df_items = pd.read_csv('datasets/UsersItems.csv')
 
 
-#paso todos precios a float, los que son F2P pasan a NaN
-df_datos.loc[:,'price']=pd.to_numeric(df_datos['price'], errors='coerce')
-#paso los NaN a 0
-df_datos.loc[:,'price']=df_datos['price'].fillna(0)
-#paso todo a minusculas
-df_datos.loc[:,'developer'] = df_datos['developer'].str.lower()
-#paso la columna a a formato de fecha
-df_datos['release_date'] = pd.to_datetime(df_datos['release_date'],errors='coerce')
 
-#transformo las columnas a srt para poder tabajarlas
-generos=df_datos['genres'].astype(str)
-tags=df_datos['tags'].astype(str)
-specs=df_datos['specs'].astype(str)
- 
-
-vec=TfidfVectorizer()
-
-#creo matriz
-vec_matrix1= vec.fit_transform(generos)
-vec_matrix2= vec.fit_transform(tags)
-vec_matrix3= vec.fit_transform(specs)
-
-#uno las matrises
-matrix_completa=np.column_stack([vec_matrix1.toarray(),vec_matrix3.toarray(),vec_matrix2.toarray()])
-
-#calculo la similituid del coseno
-coseno=cosine_similarity(matrix_completa)
 
 
 
 
 def recomendacion_juego( id_producto ):
+
+    #paso todos precios a float, los que son F2P pasan a NaN
+    df_datos.loc[:,'price']=pd.to_numeric(df_datos['price'], errors='coerce')
+    #paso los NaN a 0
+    df_datos.loc[:,'price']=df_datos['price'].fillna(0)
+    #paso todo a minusculas
+    df_datos.loc[:,'developer'] = df_datos['developer'].str.lower()
+    #paso la columna a a formato de fecha
+    df_datos['release_date'] = pd.to_datetime(df_datos['release_date'],errors='coerce')
+
+    #transformo las columnas a srt para poder tabajarlas
+    generos=df_datos['genres'].astype(str)
+    tags=df_datos['tags'].astype(str)
+    specs=df_datos['specs'].astype(str)
+    
+
+    vec=TfidfVectorizer()
+
+    #creo matriz
+    vec_matrix1= vec.fit_transform(generos)
+    vec_matrix2= vec.fit_transform(tags)
+    vec_matrix3= vec.fit_transform(specs)
+
+    #uno las matrises
+    matrix_completa=np.column_stack([vec_matrix1.toarray(),vec_matrix3.toarray(),vec_matrix2.toarray()])
+
+    #calculo la similituid del coseno
+    coseno=cosine_similarity(matrix_completa)
     #id_producto=248820.0
     #buaca el juego en el dataFrame
     juego_en_data= df_datos[df_datos['id']== id_producto]
