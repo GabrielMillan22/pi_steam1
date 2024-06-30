@@ -85,6 +85,7 @@ def recomendacion_juego( id_producto ):
 
 
 def best_developer_year(ano):
+    df_datos['release_date'] = pd.to_datetime(df_datos['release_date'], errors='coerce')
     #creo el primer dataframe con las columnas a trabajar
     df_auxi11= df_datos[['release_date','id','developer']]
     #transformo la columna id a entero
@@ -179,7 +180,7 @@ def developer2(desarrollador):
     # Crear un DataFrame con los resultados
     resultado = pd.DataFrame({'Cantidad de Items': Cantidad_Items,'Contenido Free': cantidad_free_porsentaje}).reset_index()
 
-    resultado['Contenido Free'] = resultado['Contenido Free'].apply(lambda x: f'{x:.2f}%')
+    resultado['Contenido Free'] = resultado['Contenido Free'].apply(lambda x: '{:.2f}%'.format(x))
     #results = results.reset_index(drop=True)
     resultado_final=resultado.to_dict(orient='index')
     return resultado_final
