@@ -304,6 +304,6 @@ def read_item(item_id: float):
 
 @app.get("/developer/{desarrollador}")
 def developer(desarrollador:str):
-    desarrollador = desarrollador.lower()
+    
     resultados = developer2(desarrollador)
     return{desarrollador:resultados}
