@@ -159,6 +159,7 @@ def developer_reviews_analysis1(desarrolador):
 def developer2(desarrollador):
     #creo un df con las variables a trabajar
     df_auxi1= df_datos[['release_date','price','developer','id']]
+    df_auxi1.loc[:,'price']=pd.to_numeric(df_auxi1['price'], errors='coerce')
      # Filtro el DataFrame por el desarrollador especificado
     df_desarrollador = df_auxi1[df_auxi1['developer'] == desarrollador].copy()
     #me aseguro que la columna este en fomato fecha
@@ -172,7 +173,7 @@ def developer2(desarrollador):
     Cantidad_Items = agrupado.size()
     
     # Calculo la cantidad de ítems free por año
-    cantidad_free = agrupado.apply(lambda x: (x['price'] == 0.00).sum())
+    cantidad_free = agrupado.apply(lambda x: (x['price'] == 0).sum())
     
     # Calcular el porcentaje de ítems con precio cero por año
     cantidad_free_porsentaje = (cantidad_free / Cantidad_Items) * 100
