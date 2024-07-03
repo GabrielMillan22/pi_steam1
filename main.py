@@ -57,7 +57,7 @@ def recomendacion_juego( id_producto ):
     coseno=cosine_similarity(matrix_completa)
     #id_producto=248820.0
     #buaca el juego en el dataFrame
-    juego_en_data= df_datos[df_datos['id']== id_producto]
+    juego_en_data= df_auc3[df_auc3['id']== id_producto]
     if not juego_en_data.empty:
         juego_indice=juego_en_data.index[0]
         #obtengo los similares
