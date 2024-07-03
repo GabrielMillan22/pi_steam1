@@ -48,7 +48,7 @@ def recomendacion_juego( id_producto ):
     generos=df_auc3['genres'].astype(str)
     #tags=df_auc3['tags'].astype(str)
     #specs=df_auc3['specs'].astype(str)
-    vec=TfidfVectorizer()
+    vec=TfidfVectorizer(max_features=1000)
     vec_matrix1= vec.fit_transform(generos)
     #vec_matrix2= vec.fit_transform(tags)
     #vec_matrix3= vec.fit_transform(specs)
