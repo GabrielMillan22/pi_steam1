@@ -17,52 +17,47 @@ def read_root():
     a="Hola Mundo"
     return {a}
 
-
+pd.options.mode.copy_on_write = True
 
 #cargo el dataset
 df_datos = pd.read_csv('datasets/datos.csv')
 df_reviws = pd.read_csv('datasets/UserReviews.csv')
 df_items = pd.read_csv('datasets/UsersItems.csv')
 
-
-
+#paso todos precios a float, los que son F2P pasan a NaN
+df_datos.loc[:,'price']=pd.to_numeric(df_datos['price'], errors='coerce')
+#paso los NaN a 0
+df_datos.loc[:,'price']=df_datos['price'].fillna(0)
+#paso todo a minusculas
+df_datos.loc[:,'developer'] = df_datos['developer'].str.lower()
+#paso la columna a a formato de fecha
+df_datos['release_date'] = pd.to_datetime(df_datos['release_date'],errors='coerce')
 
 
 
 
 def recomendacion_juego( id_producto ):
 
-    #paso todos precios a float, los que son F2P pasan a NaN
-    df_datos.loc[:,'price']=pd.to_numeric(df_datos['price'], errors='coerce')
-    #paso los NaN a 0
-    df_datos.loc[:,'price']=df_datos['price'].fillna(0)
-    #paso todo a minusculas
-    df_datos.loc[:,'developer'] = df_datos['developer'].str.lower()
-    #paso la columna a a formato de fecha
-    df_datos['release_date'] = pd.to_datetime(df_datos['release_date'],errors='coerce')
-
+    df_auc = df_datos[['genres','tags','specs','id']]
+    df_auc2= df_reviws[['item_id','recommend']]
+    df_auc['id'] =df_auc['id'].astype(int)
+    df_auc2.rename(columns={'item_id':'id'},inplace=True)
+    df_auc3=pd.merge(df_auc2,df_auc,on='id').reset_index(drop=True)
+    df_auc3=df_auc3[(df_auc3['recommend']!=False)]
     #transformo las columnas a srt para poder tabajarlas
-    generos=df_datos['genres'].astype(str)
-    tags=df_datos['tags'].astype(str)
-    specs=df_datos['specs'].astype(str)
-    
-
+    generos=df_auc3['genres'].astype(str)
+    tags=df_auc3['tags'].astype(str)
+    specs=df_auc3['specs'].astype(str)
     vec=TfidfVectorizer()
-
-    #creo matriz
     vec_matrix1= vec.fit_transform(generos)
     vec_matrix2= vec.fit_transform(tags)
     vec_matrix3= vec.fit_transform(specs)
-
-    #uno las matrises
-    matrix_completa=np.column_stack([vec_matrix1.toarray(),vec_matrix3.toarray(),vec_matrix2.toarray()])
-
+    matrix_completa=np.column_stack([vec_matrix1.toarray(),vec_matrix2.toarray(),vec_matrix3.toarray()])
     #calculo la similituid del coseno
     coseno=cosine_similarity(matrix_completa)
     #id_producto=248820.0
     #buaca el juego en el dataFrame
     juego_en_data= df_datos[df_datos['id']== id_producto]
-
     if not juego_en_data.empty:
         juego_indice=juego_en_data.index[0]
         #obtengo los similares
@@ -70,12 +65,12 @@ def recomendacion_juego( id_producto ):
         #los ordeno de mayor a menor
         juegos_mas_similares=np.argsort(-juegos_similares)
         #obtengo los 6 primeros
-        top_5_juegos=df_datos.loc[juegos_mas_similares[0:6],'app_name']
+        top_5_juegos=df4.loc[juegos_mas_similares[0:6],'app_name']
         #los combierto en lista 
         top_5_juegos_mostrar=top_5_juegos.to_numpy().tolist()
         #tomo quito el primer valor para guardarlo en una variable para mostrar el nombre del juego que ingrese por id
         nombre_del_juego= top_5_juegos_mostrar.pop(0)
-        a= (f'los 5 juegos recomendados para el id {id_producto} ({nombre_del_juego}) son: {top_5_juegos_mostrar}' )
+        a= ('los 5 juegos recomendados para el id {} ({}) son: {}'.format(id_producto,nombre_del_juego,top_5_juegos_mostrar) )
         #return print(f'los 5 juegos recomendados para el id {id_producto} ({nombre_del_juego}) son: {top_5_juegos_mostrar}' )
         return a
     else:
