@@ -65,7 +65,7 @@ def recomendacion_juego( id_producto ):
         #los ordeno de mayor a menor
         juegos_mas_similares=np.argsort(-juegos_similares)
         #obtengo los 6 primeros
-        top_5_juegos=df4.loc[juegos_mas_similares[0:6],'app_name']
+        top_5_juegos=df_datos.loc[juegos_mas_similares[0:6],'app_name']
         #los combierto en lista 
         top_5_juegos_mostrar=top_5_juegos.to_numpy().tolist()
         #tomo quito el primer valor para guardarlo en una variable para mostrar el nombre del juego que ingrese por id
