@@ -38,21 +38,21 @@ df_datos['release_date'] = pd.to_datetime(df_datos['release_date'],errors='coerc
 
 def recomendacion_juego( id_producto ):
 
-    df_auc = df_datos[['genres','tags','specs','id']]
+    df_auc = df_datos[['genres','id']]
     df_auc2= df_reviws[['item_id','recommend']]
-    df_auc['id'] =df_auc['id'].astype(int)
+    df_auc2['item_id'] =df_auc2['item_id'].astype(float)
     df_auc2.rename(columns={'item_id':'id'},inplace=True)
     df_auc3=pd.merge(df_auc2,df_auc,on='id').reset_index(drop=True)
     df_auc3=df_auc3[(df_auc3['recommend']!=False)]
     #transformo las columnas a srt para poder tabajarlas
     generos=df_auc3['genres'].astype(str)
-    tags=df_auc3['tags'].astype(str)
-    specs=df_auc3['specs'].astype(str)
+    #tags=df_auc3['tags'].astype(str)
+    #specs=df_auc3['specs'].astype(str)
     vec=TfidfVectorizer()
     vec_matrix1= vec.fit_transform(generos)
-    vec_matrix2= vec.fit_transform(tags)
-    vec_matrix3= vec.fit_transform(specs)
-    matrix_completa=np.column_stack([vec_matrix1.toarray(),vec_matrix2.toarray(),vec_matrix3.toarray()])
+    #vec_matrix2= vec.fit_transform(tags)
+    #vec_matrix3= vec.fit_transform(specs)
+    matrix_completa=np.column_stack([vec_matrix1.toarray()])
     #calculo la similituid del coseno
     coseno=cosine_similarity(matrix_completa)
     #id_producto=248820.0
