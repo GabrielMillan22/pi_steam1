@@ -186,7 +186,14 @@ def developer2(desarrollador):
     return resultado_final
 
 def user_data1(user_id):
-    
+    #paso todos precios a float, los que son F2P pasan a NaN
+    df_datos.loc[:,'price']=pd.to_numeric(df_datos['price'], errors='coerce')
+    #paso los NaN a 0
+    df_datos.loc[:,'price']=df_datos['price'].fillna(0)
+    #paso todo a minusculas
+    df_datos.loc[:,'developer'] = df_datos['developer'].str.lower()
+    #paso la columna a a formato de fecha
+    df_datos['release_date'] = pd.to_datetime(df_datos['release_date'],errors='coerce')
     # Filtrar por usuario y obtener los items
     user_items = df_items[df_items['user_id'] == user_id]['item_id']
 
