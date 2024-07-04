@@ -194,9 +194,10 @@ def user_data1(user_id):
     df_datos.loc[:,'developer'] = df_datos['developer'].str.lower()
     #paso la columna a a formato de fecha
     df_datos['release_date'] = pd.to_datetime(df_datos['release_date'],errors='coerce')
+    df_datos['id'] = df_datos['id'].astype(int)
     # Filtrar por usuario y obtener los items
     user_items = df_items[df_items['user_id'] == user_id]['item_id']
-
+    
     # Obtener el precio de los juegos que tenga y sumarlos
     precios = df_datos[df_datos['id'].isin(user_items)]['price'].sum()
     dinero_gastado = str(int(precios)) + ' USD'
