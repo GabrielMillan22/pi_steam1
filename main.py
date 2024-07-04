@@ -39,6 +39,7 @@ df_datos['release_date'] = pd.to_datetime(df_datos['release_date'],errors='coerc
 def recomendacion_juego( id_producto ):
 
     df_auc = df_datos[['genres','id']]
+    df_auc=df_auc.loc[:500]
     df_auc2= df_reviws[['item_id','recommend']]
     df_auc2['item_id'] =df_auc2['item_id'].astype(float)
     df_auc2.rename(columns={'item_id':'id'},inplace=True)
@@ -46,8 +47,9 @@ def recomendacion_juego( id_producto ):
     df_auc3=df_auc3[(df_auc3['recommend']!=False)]
     #transformo las columnas a srt para poder tabajarlas
     generos=df_auc3['genres'].astype(str)
-    generos=generos.loc[:1000]
+    generos=generos.loc[:500]
     #tags=df_auc3['tags'].astype(str)
+    #tags=tags.loc[:500]
     #specs=df_auc3['specs'].astype(str)
     vec=TfidfVectorizer()
     vec_matrix1= vec.fit_transform(generos)
@@ -58,7 +60,7 @@ def recomendacion_juego( id_producto ):
     coseno=cosine_similarity(matrix_completa)
     #id_producto=248820.0
     #buaca el juego en el dataFrame
-    juego_en_data= df_auc3[df_auc3['id']== id_producto]
+    juego_en_data= df_auc[df_auc['id']== id_producto]
     if not juego_en_data.empty:
         juego_indice=juego_en_data.index[0]
         #obtengo los similares
