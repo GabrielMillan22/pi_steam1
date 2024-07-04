@@ -123,8 +123,8 @@ def best_developer_year(ano):
     dicc_salida = [{'Puesto 1':puesto_1},{'Puesto 2':puesto_2},{'Puesto 3':puesto_3}]
     return dicc_salida
 
-def developer_reviews_analysis1(desarrolador):
-    desarrolador=desarrolador.lower()
+def developer_reviews_analysis1(desarrollador):
+    desarrollador=desarrollador.lower()
     #creo los dataframe con las columnas atrabajar
     df_ra=df_reviws[['item_id','sentiment_analysis']]
     df_ra2=df_datos[['id','developer']]
@@ -147,7 +147,7 @@ def developer_reviews_analysis1(desarrolador):
     df_final['Positivos'] = df_final['Positivos'].astype(int)
     df_final['Negativos'] = df_final['Negativos'].astype(int)
     #Creo un dataframe filtrando al desarrollador que presiso y reseteo el indice
-    df_salida=df_final[df_final['developer']==desarrolador].reset_index()
+    df_salida=df_final[df_final['developer']==desarrollador].reset_index()
     #Armo una lista con los valores corespondientes para el desarrolador en cuestion
     negativos=df_salida['Negativos'].iloc[0] if len(df_salida) > 0 else 0
     positivos=df_salida["Positivos"].iloc[0] if len(df_salida) > 0 else 0
