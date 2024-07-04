@@ -125,6 +125,7 @@ def best_developer_year(ano):
     return dicc_salida
 
 def developer_reviews_analysis1(desarrolador):
+    desarrolador=desarrolador.lower()
     #creo los dataframe con las columnas atrabajar
     df_ra=df_reviws[['item_id','sentiment_analysis']]
     df_ra2=df_datos[['id','developer']]
@@ -184,34 +185,64 @@ def developer2(desarrollador):
     resultado_final=resultado.to_dict(orient='index')
     return resultado_final
 
-def user_data1(user_id):
-    # Asegúrate de que 'id' sea entero
-    df_datos['id'] = df_datos['id'].astype(int)
+def user_data(user_id):
+    
+    # Filtrar por usuario y obtener los items
+    user_items = df_items[df_items['user_id'] == user_id]['item_id']
 
-    # Filtra los item_ids del usuario especificado
-    lista = df_items.loc[df_items['user_id'] == user_id, 'item_id'].tolist()
+    # Obtener el precio de los juegos que tenga y sumarlos
+    precios = df_datos[df_datos['id'].isin(user_items)]['price'].sum()
+    dinero_gastado = str(int(precios)) + ' USD'
 
-    # Obtiene el precio de los juegos que tenga y los suma
-    precios = df_datos.loc[df_datos['id'].isin(lista), 'price'].sum()
-    dinero_gastado = '{} USD'.format(int(precios))
+    # Obtener la cantidad de recomendaciones
+    user_recommendations = df_reviws[df_reviws['user_id'] == user_id]['recommend']
+    rsi = user_recommendations.sum()
+    total = len(user_recommendations)
+    rno = total - rsi
+    porsentaje = int((rsi / total) * 100) if total > 0 else 0
+    porsentaje_str = str(porsentaje) + '%'
 
-    # Obtiene la cantidad de recomendaciones
-    user_reviews = df_reviws[df_reviws['user_id'] == user_id]
-    rsi = user_reviews['recommend'].sum()
-    total = user_reviews.shape[0]
-    porsentaje = '{}%'.format(int((rsi / total) * 100) if total > 0 else 0)
-
-    # Obtiene la cantidad de items
-    total_items = df_items.loc[df_items['user_id'] == user_id, 'items_count'].max()
+    # Obtener la cantidad de items
+    total_items = df_items[df_items['user_id'] == user_id]['items_count'].values
+    total_items = total_items[0] if len(total_items) > 0 else 0
 
     # Retorno de la función en formato diccionario
     dic1 = {
         'usuario': user_id,
         'Dinero gastado': dinero_gastado,
-        'Porsentaje de recomendacion': porsentaje,
+        'Porsentaje de recomendacion': porsentaje_str,
         'Cantidad de items': total_items
     }
     return dic1
+
+# def user_data1(user_id):
+#     # Asegúrate de que 'id' sea entero
+#     df_datos['id'] = df_datos['id'].astype(int)
+
+#     # Filtra los item_ids del usuario especificado
+#     lista = df_items.loc[df_items['user_id'] == user_id, 'item_id'].tolist()
+
+#     # Obtiene el precio de los juegos que tenga y los suma
+#     precios = df_datos.loc[df_datos['id'].isin(lista), 'price'].sum()
+#     dinero_gastado = '{} USD'.format(int(precios))
+
+#     # Obtiene la cantidad de recomendaciones
+#     user_reviews = df_reviws[df_reviws['user_id'] == user_id]
+#     rsi = user_reviews['recommend'].sum()
+#     total = user_reviews.shape[0]
+#     porsentaje = '{}%'.format(int((rsi / total) * 100) if total > 0 else 0)
+
+#     # Obtiene la cantidad de items
+#     total_items = df_items.loc[df_items['user_id'] == user_id, 'items_count'].max()
+
+#     # Retorno de la función en formato diccionario
+#     dic1 = {
+#         'usuario': user_id,
+#         'Dinero gastado': dinero_gastado,
+#         'Porsentaje de recomendacion': porsentaje,
+#         'Cantidad de items': total_items
+#     }
+#     return dic1
 
 def user_data2(user_id):
     df_datos['id']=df_datos['id'].astype(int)
