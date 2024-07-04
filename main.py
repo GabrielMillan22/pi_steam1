@@ -155,7 +155,7 @@ def developer_reviews_analysis1(desarrolador):
     return lista_salida
 
 def developer2(desarrollador):
-    
+    desarrollador=desarrollador.str.lower()
     
     #creo un df con las variables a trabajar
     df_auxi1= df_datos[['release_date','price','developer','id']]
