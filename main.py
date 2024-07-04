@@ -17,6 +17,7 @@ def read_root():
     a="Hola Mundo"
     return {a}
 
+#esto es para evitar warning con pandas cuando uso "loc"
 pd.options.mode.copy_on_write = True
 
 #cargo el dataset
@@ -36,7 +37,7 @@ df_datos['release_date'] = pd.to_datetime(df_datos['release_date'],errors='coerc
 
 
 
-def recomendacion_juego( id_producto ):
+def recomendacion_juego1( id_producto ):
 
     df_auc = df_datos[['genres','id']]
     df_auc=df_auc.loc[:500]
@@ -79,8 +80,6 @@ def recomendacion_juego( id_producto ):
     else:
         a='el juego no esta en la base de datos'
         return a
-
-
 
 def best_developer_year(ano):
     df_datos['release_date'] = pd.to_datetime(df_datos['release_date'], errors='coerce')
@@ -156,6 +155,7 @@ def developer_reviews_analysis1(desarrolador):
     return lista_salida
 
 def developer2(desarrollador):
+    desarrolador=desarrolador.lower()
     #creo un df con las variables a trabajar
     df_auxi1= df_datos[['release_date','price','developer','id']]
     df_auxi1.loc[:,'price']=pd.to_numeric(df_auxi1['price'], errors='coerce')
@@ -238,35 +238,6 @@ def user_data1(user_id):
            }
     return dic1
 
-# def user_data1(user_id):
-#     # Asegúrate de que 'id' sea entero
-#     df_datos['id'] = df_datos['id'].astype(int)
-
-#     # Filtra los item_ids del usuario especificado
-#     lista = df_items.loc[df_items['user_id'] == user_id, 'item_id'].tolist()
-
-#     # Obtiene el precio de los juegos que tenga y los suma
-#     precios = df_datos.loc[df_datos['id'].isin(lista), 'price'].sum()
-#     dinero_gastado = '{} USD'.format(int(precios))
-
-#     # Obtiene la cantidad de recomendaciones
-#     user_reviews = df_reviws[df_reviws['user_id'] == user_id]
-#     rsi = user_reviews['recommend'].sum()
-#     total = user_reviews.shape[0]
-#     porsentaje = '{}%'.format(int((rsi / total) * 100) if total > 0 else 0)
-
-#     # Obtiene la cantidad de items
-#     total_items = df_items.loc[df_items['user_id'] == user_id, 'items_count'].max()
-
-#     # Retorno de la función en formato diccionario
-#     dic1 = {
-#         'usuario': user_id,
-#         'Dinero gastado': dinero_gastado,
-#         'Porsentaje de recomendacion': porsentaje,
-#         'Cantidad de items': total_items
-#     }
-#     return dic1
-
 def user_data2(user_id):
     df_datos['id']=df_datos['id'].astype(int)
     lista=[]
@@ -313,6 +284,7 @@ def user_data2(user_id):
     return dic1
 
 def UserForGenre(genero):
+    genero=genero.capitalize()
     # Asegurarse de que la fecha esté en formato datetime
     df_datos['release_date'] = pd.to_datetime(df_datos['release_date'], errors='coerce')
     
@@ -367,7 +339,7 @@ def UserForGenre(genero):
 
 @app.get("/user_data/{user_id}")
 def user_data(user_id:str):
-    return {'respuesta':user_data1(user_id)}
+    return {'respuesta':user_data2(user_id)}
 
 @app.get("/developer_reviews_analysis/{Desarrollador}")
 def developer_reviews_analysis(desarrollador:str):
@@ -383,8 +355,8 @@ def usuario_por_genero(genero:str):
     return {'respuesta':UserForGenre(genero)}
 
 @app.get("/items/{item_id}")
-def read_item(item_id: float):
-    return {'respuesta':recomendacion_juego(item_id)}
+def recomendacion_juego(item_id: float):
+    return {'respuesta':recomendacion_juego1(item_id)}
 
 
 @app.get("/developer/{desarrollador}")
