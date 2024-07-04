@@ -3,19 +3,20 @@
 
 <h4> Para este proyecto tuve que desarrollar un sistema de recomendación para steam en primera parte en la carpeta de dataset está todos los datos utilizados para trabajar, en la carpeta de procesamiento están los primeros pasos que serían el  EDA y ETL que es para transformar los datos para su posterior procesamiento también están las pruebas y creaciones de funciones donde testea y probé todas las funciones en la segunda parte donde acomodé un poco las cosas y después comenté lo que es el código</h4>
 
-<p><h3>Funciones creadas:</h3>
+<p>
+<h3>Funciones creadas:</h3>
 
-    Developer( desarrollador):Cantidad de items y porcentaje de contenido Free por año según empresa desarrolladora.
-    
-    Dserdata( User_id ): Debe devolver cantidad de dinero gastado por el usuario, el porcentaje de recomendación en base a reviews.recommend y cantidad de items. 
+<span style="color:orange;">Developer( desarrollador)</span>: Cantidad de items y porcentaje de contenido Free por año según empresa desarrolladora.
 
-    UserForGenre( genero ): Debe devolver el usuario que acumula más horas jugadas para el género dado y una lista de la acumulación de horas jugadas por año de lanzamiento.
+<span style="color:orange;">Dserdata( User_id )</span>: Debe devolver cantidad de dinero gastado por el usuario, el porcentaje de recomendación en base a reviews.recommend y cantidad de items.
 
-    Best_developer_year( año): Devuelve el top 3 de desarrolladores con juegos MÁS recomendados por usuarios para el año dado.
+<span style="color:orange;">UserForGenre( genero )</span>: Debe devolver el usuario que acumula más horas jugadas para el género dado y una lista de la acumulación de horas jugadas por año de lanzamiento.
 
-    Developer_reviews_analysis( desarrolladora : str ): Según el desarrollador, se devuelve un diccionario con el nombre del desarrollador como llave y una lista con la cantidad total de registros de reseñas de usuarios que se encuentren categorizados con un análisis de sentimiento como valor positivo o negativo.
+<span style="color:orange;">Best_developer_year( año)</span>: Devuelve el top 3 de desarrolladores con juegos MÁS recomendados por usuarios para el año dado.
 
-    recomendacion_juego( id de producto ): Ingresando el id de producto, deberíamos recibir una lista con 5 juegos recomendados similares al ingresado.
+<span style="color:orange;">Developer_reviews_analysis( desarrolladora : str )</span>: Según el desarrollador, se devuelve un diccionario con el nombre del desarrollador como llave y una lista con la cantidad total de registros de reseñas de usuarios que se encuentren categorizados con un análisis de sentimiento como valor positivo o negativo.
+
+<span style="color:orange;">recomendacion_juego( id de producto )</span>: Ingresando el id de producto, deberíamos recibir una lista con 5 juegos recomendados similares al ingresado.
 
 </p>
 

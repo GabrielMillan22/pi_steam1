@@ -185,59 +185,6 @@ def developer2(desarrollador):
     resultado_final=resultado.to_dict(orient='index')
     return resultado_final
 
-def user_data1(user_id):
-    #paso todos precios a float, los que son F2P pasan a NaN
-    df_datos.loc[:,'price']=pd.to_numeric(df_datos['price'], errors='coerce')
-    #paso los NaN a 0
-    df_datos.loc[:,'price']=df_datos['price'].fillna(0)
-    #paso todo a minusculas
-    df_datos.loc[:,'developer'] = df_datos['developer'].str.lower()
-    #paso la columna a a formato de fecha
-    df_datos['release_date'] = pd.to_datetime(df_datos['release_date'],errors='coerce')
-    df_datos['id'] = df_datos['id'].astype(int)
-    lista=[]
-    #Filtra por usuario
-    for i,j in zip(df_items['user_id'],df_items['item_id']) :
-        if i == user_id:
-            lista.append(j)
-    #Obtiene el presio de los juegos que tenga y los suma
-    precios= 0
-    for i, j in zip(df_datos['id'],df_datos['price']):
-        if i in lista:
-            precios+=j 
-    dinero_gastado = f'{int(precios)} USD'
-    #Obtiene la contidad de recomendaciones
-    rsi=0
-    rno=0
-    total=0
-    for i, j in zip(df_reviws['user_id'],df_reviws['recommend']):
-        if i == user_id:
-            if j== True:
-                rsi+=1
-                total+=1
-            else:
-                rno+=1
-                total+=1
-    if total > 0:
-        porsentaje = int((rsi/total)*100)
-    else:
-        porsentaje = 0
-    porsentaje = f'{porsentaje}%'
-    #Obtiene la cantidad de items
-    total_items=0
-    for i, j in zip(df_items['user_id'],df_items['items_count']):
-        if i == user_id:
-            total_items= j
-        if total_items > 0:
-            break
-    #retorno de la funcion en formato diccionario
-    dic1 ={'usuario': user_id,
-           'Dinero gastado': dinero_gastado,
-           'Porsentaje de recomendacion':porsentaje,
-           'Cantidad de items': total_items
-           }
-    return dic1
-
 def user_data2(user_id):
     df_datos['id']=df_datos['id'].astype(int)
     lista=[]
@@ -284,7 +231,10 @@ def user_data2(user_id):
     return dic1
 
 def UserForGenre(genero):
-    genero=genero.capitalize()
+    #paso el imput a minusscula
+    genero=genero.lower()
+    #transformo todo los generos a minuscula
+    df_datos['genres'] = df_datos['genres'].str.lower()
     # Asegurarse de que la fecha esté en formato datetime
     df_datos['release_date'] = pd.to_datetime(df_datos['release_date'], errors='coerce')
     
