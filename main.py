@@ -185,7 +185,7 @@ def developer2(desarrollador):
     resultado_final=resultado.to_dict(orient='index')
     return resultado_final
 
-def user_data(user_id):
+def user_data1(user_id):
     
     # Filtrar por usuario y obtener los items
     user_items = df_items[df_items['user_id'] == user_id]['item_id']
