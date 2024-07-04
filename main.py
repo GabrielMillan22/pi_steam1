@@ -155,8 +155,8 @@ def developer_reviews_analysis1(desarrolador):
     return lista_salida
 
 def developer2(desarrollador):
-    desarrolador=desarrolador.lower()
-    df_datos['developer']=df_datos['developer'].str.lower()
+    
+    
     #creo un df con las variables a trabajar
     df_auxi1= df_datos[['release_date','price','developer','id']]
     df_auxi1.loc[:,'price']=pd.to_numeric(df_auxi1['price'], errors='coerce')
