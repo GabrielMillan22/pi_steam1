@@ -46,10 +46,11 @@ def recomendacion_juego( id_producto ):
     df_auc3=df_auc3[(df_auc3['recommend']!=False)]
     #transformo las columnas a srt para poder tabajarlas
     generos=df_auc3['genres'].astype(str)
+    generos=generos.loc[:1000]
     #tags=df_auc3['tags'].astype(str)
     #specs=df_auc3['specs'].astype(str)
     vec=TfidfVectorizer()
-    vec_matrix1= vec.fit_transform(df_auc3['genres'])
+    vec_matrix1= vec.fit_transform(generos)
     #vec_matrix2= vec.fit_transform(tags)
     #vec_matrix3= vec.fit_transform(specs)
     matrix_completa=np.column_stack([vec_matrix1.toarray()])
