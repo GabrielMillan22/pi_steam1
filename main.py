@@ -195,32 +195,47 @@ def user_data1(user_id):
     #paso la columna a a formato de fecha
     df_datos['release_date'] = pd.to_datetime(df_datos['release_date'],errors='coerce')
     df_datos['id'] = df_datos['id'].astype(int)
-    # Filtrar por usuario y obtener los items
-    user_items = df_items[df_items['user_id'] == user_id]['item_id']
-    
-    # Obtener el precio de los juegos que tenga y sumarlos
-    precios = df_datos[df_datos['id'].isin(user_items)]['price'].sum()
-    dinero_gastado = str(int(precios)) + ' USD'
-
-    # Obtener la cantidad de recomendaciones
-    user_recommendations = df_reviws[df_reviws['user_id'] == user_id]['recommend']
-    rsi = user_recommendations.sum()
-    total = len(user_recommendations)
-    rno = total - rsi
-    porsentaje = int((rsi / total) * 100) if total > 0 else 0
-    porsentaje_str = str(porsentaje) + '%'
-
-    # Obtener la cantidad de items
-    total_items = df_items[df_items['user_id'] == user_id]['items_count'].values
-    total_items = total_items[0] if len(total_items) > 0 else 0
-
-    # Retorno de la función en formato diccionario
-    dic1 = {
-        'usuario': user_id,
-        'Dinero gastado': dinero_gastado,
-        'Porsentaje de recomendacion': porsentaje_str,
-        'Cantidad de items': total_items
-    }
+    lista=[]
+    #Filtra por usuario
+    for i,j in zip(df_items['user_id'],df_items['item_id']) :
+        if i == user_id:
+            lista.append(j)
+    #Obtiene el presio de los juegos que tenga y los suma
+    precios= 0
+    for i, j in zip(df_datos['id'],df_datos['price']):
+        if i in lista:
+            precios+=j 
+    dinero_gastado = f'{int(precios)} USD'
+    #Obtiene la contidad de recomendaciones
+    rsi=0
+    rno=0
+    total=0
+    for i, j in zip(df_reviws['user_id'],df_reviws['recommend']):
+        if i == user_id:
+            if j== True:
+                rsi+=1
+                total+=1
+            else:
+                rno+=1
+                total+=1
+    if total > 0:
+        porsentaje = int((rsi/total)*100)
+    else:
+        porsentaje = 0
+    porsentaje = f'{porsentaje}%'
+    #Obtiene la cantidad de items
+    total_items=0
+    for i, j in zip(df_items['user_id'],df_items['items_count']):
+        if i == user_id:
+            total_items= j
+        if total_items > 0:
+            break
+    #retorno de la funcion en formato diccionario
+    dic1 ={'usuario': user_id,
+           'Dinero gastado': dinero_gastado,
+           'Porsentaje de recomendacion':porsentaje,
+           'Cantidad de items': total_items
+           }
     return dic1
 
 # def user_data1(user_id):
